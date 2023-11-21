@@ -1,0 +1,319 @@
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="_layout">
+
+<head>
+
+
+
+<style>
+.modal-backdrop {
+	/* bug fix - no overlay */
+	display: none;
+}
+
+.modal {
+	/* bug fix - custom overlay */
+	background-color: rgba(10, 10, 10, 0.45);
+}
+</style>
+<meta charset="ISO-8859-1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.1/jquery.twbsPagination.min.js"></script>
+   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script type="text/javascript">
+
+var globalarray = [];
+var $pagination = $('#pagination'),
+totalRecords = 0,
+records = [],
+displayRecords = [],
+recPerPage = 10,
+page = 1,
+totalPages = 0;
+    $(document).ready(function () {	
+    	
+        var student = {};
+        var dynamicURL = "";
+        var methodName = "";
+        
+        
+        getAllStudents();
+        
+        $('#btnstudent').click(function () {
+        	
+        	student.id = $('#txtId').val();
+        	student.name = $('#name').val();
+        	student.age = $('#age').val();
+        	student.gender = $('#gender').val();
+            var studentId = student.id;
+            
+           
+            if(studentId){
+                //update it
+                dynamicURL = "http://localhost:8080/students/update"
+                methodName = "PUT";
+            }else{
+                //save it
+                dynamicURL = "http://localhost:8080/students/create";
+                methodName = "POST";
+            }
+            var studentObj = JSON.stringify(student);
+            console.log("Value  : "+studentObj);
+            console.log("methodName  : "+methodName);
+            $.ajax({
+                url: dynamicURL,
+                method: methodName,
+                data: studentObj,
+                contentType: 'application/json; charset=utf-8',
+                success: function () {
+                	$('#myModal').modal('hide');
+                    alert('Saved successfully');
+                    getAllStudents();
+                    reset();
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            })
+        })
+    })
+
+    function getAllStudents() {
+    	 $.ajax({
+             url: "http://localhost:8080/students/getAllStudents",
+             method: "GET",
+             dataType: "json",
+             success: function (data) {
+             	//globalarray = data;
+             	  records = data;
+                  console.log("records  : "+records);
+                  console.log("records length : "+records.length);
+                  totalRecords = records.length;
+                  totalPages = Math.ceil(totalRecords / recPerPage);
+                 
+                  apply_pagination();
+                  
+                
+               /*   var tableBody = $('#dtable tbody');
+                 tableBody.empty();
+                 $(displayRecords).each(function (index, element) {
+                	
+                     tableBody.append('<tr><td>'+element.id+'</td><td>'+element.name+'</td><td>'+element.age+'</td><td>'+element.gender+'</td><td><button  onclick = "updateStudent('+index+')" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Update</button> | <button onclick = "deleteStudent('+element.id+')">Delete</button></td></tr>');
+                 }) */
+                 
+             },
+             error: function (error) {
+                 alert(error);
+             }
+         })
+      
+    }
+    function apply_pagination() {
+    	console.log("apply_pagination " );
+    	$pagination.twbsPagination({
+			totalPages: totalPages,
+			visiblePages: 6,
+			
+			onPageClick: function (event, page) {
+				
+				
+				console.log("recPerPage " +recPerPage);
+				displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+				endRec = (displayRecordsIndex) + recPerPage;
+				console.log(displayRecordsIndex + 'ssssssssss'+ endRec);
+				displayRecords = records.slice(displayRecordsIndex, endRec);
+				generate_table();
+			}
+		});
+	}
+       /*  $pagination.twbsPagination({
+               totalPagess : totalPages,
+               visiblePages: 6,
+               
+              onPageClick: function (event, page) {
+                    var displayRecordsIndex = Math.max(page - 1, 0) * recPerPage;
+                    var endRec = (displayRecordsIndex) + recPerPage;
+                   
+                    displayRecords = records.slice(displayRecordsIndex, endRec);
+                    console.log("displayRecords  : "+displayRecords);
+                    //generate_table();
+              }
+        }); */
+  
+    
+    function generate_table() {
+    	 var tableBody = $('#dtable tbody');
+         tableBody.empty();
+         $(displayRecords).each(function (index, element) {
+        	 console.log("displayRecords  : "+displayRecords);
+        	 
+             tableBody.append('<tr><td>'+element.id+'</td><td>'+element.name+'</td><td>'+element.age+'</td><td>'+element.gender+'</td><td><button  onclick = "updateStudent('+index+')" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Update</button> | <button onclick = "deleteStudent('+element.id+')">Delete</button></td></tr>');
+         })
+  }
+    
+    
+function getStudents() {
+    	
+	  $.ajax({
+          url: "http://localhost:8080/students/getStudentsPaginated?page=1&size=5",//http://localhost:8080/students/getAllStudents
+          method: "GET",
+          dataType: "json",
+          success: function (data) {
+          	var  array = data
+          	globalarray = data.data.students;
+          	 console.log("Value  : "+data.data.pagination.totalCount);
+              var tableBody = $('#dtable tbody');
+              tableBody.empty();
+              $(globalarray).each(function (index, element) {
+              	console.log("Value  : "+element.id);
+                  tableBody.append('<tr><td>'+element.id+'</td><td>'+element.name+'</td><td>'+element.age+'</td><td>'+element.gender+'</td><td><button  onclick = "updateStudent('+index+')" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Update</button> | <button onclick = "deleteStudent('+element.id+')">Delete</button></td></tr>');
+              })
+          },
+          error: function (error) {
+              alert(error);
+          }
+      })
+    }
+    
+
+    function deleteStudent(id){
+        $.ajax({
+            url: 'http://localhost:8080/students/delete/'+id,
+            method: 'DELETE',
+            success: function () {
+                alert('record has been deleted');
+                getAllStudents();
+            },
+            error: function (error) {
+                alert(error);
+            }
+        })
+    }
+
+    function updateStudent(index){
+    	
+    	var data = globalarray[index];
+    	console.log(data);
+    	 $('#txtId').val(data.id);
+         $('#name').val(data.name);
+         $('#age').val(data.age);
+         $('#gender').val(data.gender);
+     
+         console.log(data.id);
+    } 
+
+    function reset(){
+    	 
+        $('#name').val('');
+        $('#age').val('');
+        $('#gender').val('');
+        $('#txtId').val('');
+    }
+</script>
+
+
+
+
+
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+
+		<div class="container mt-5">
+
+
+			<!-- 	<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >  -->
+			<div class="modal fade" tabindex="-1" role="dialog" id="myModal"
+				aria-labelledby="myLargeModalLabel" aria-hidden="true"
+				data-backdrop="static">
+
+				<div class="modal-dialog modal-lg">
+
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Update Student
+								Details</h4>
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div class="tab-pane active" id="update">
+
+
+										<input type="text" id="txtId" hidden> <label>Name</label>
+										<input type="text" id="name"></br> <label>Age</label> <input
+											type="number" id="age"> </br> <label>Gender</label> <input
+											type="text" id="gender"> </br> <input type="button"
+											value="Add Student" id="btnstudent">
+
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<table class="table table-striped table-advance table-hover"
+				id="dtable">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Age</th>
+						<th>Gender</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			
+			
+			
+			
+			 <div id="pager">
+        <ul id="pagination" class="pagination-lg"></ul>
+    </div>
+    </div>
+
+		</div>
+		</div>
+
+
+
+	</div>
+
+</body>
+</html>

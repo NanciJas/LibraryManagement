@@ -1,0 +1,110 @@
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="_layout">
+
+<head>
+
+
+
+
+<meta charset="ISO-8859-1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/script.js"></script>
+
+<link rel="stylesheet" href="/style.css">
+
+
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="container mt-5">
+				<div class="card" style="width: 55rem;">
+				<div class="card-header text-center bg-info ">
+					<h3>Issue Book</h3>
+				</div>
+				<div class="card-body">
+					<form id='issueformId' action='/'>
+					<input type="text" id="txtId" hidden> 
+						<!-- <div class="form-group">
+							<label for="user-name">Student Name</label> <input type="text" id="studentname"
+								name="studentname"></input>
+						</div>
+
+						<div class="form-group">
+							<label for="user-name">Book Name</label> <input type="text" id="bookname"
+								name="bookname"></input>
+						</div> 
+						
+						
+						<div class="form-group">
+							<input type="search" name="studentname" class="studentname" id="studentname"
+						size="50" placeholder="Search Students.." required />
+						</div>
+						
+						
+						<div class="form-group">
+							<input type="search" name="bookname" class="bookname" id="bookname"
+						size="50" placeholder="Search Books" required />
+						</div>
+						
+						-->
+						
+						
+							<div class="form-group">
+							<label for="user-name">Student Name</label> <select id="studentname"
+								name="studentname">
+								<option id = "gen" value=""></option>
+							</select>
+						</div>
+						
+							<div class="form-group">
+							<label for="user-name">Book Name</label> <select id="bookname"
+								name="bookname">
+								<option id= "gen" value=""></option>
+							</select>
+						</div>
+						
+						
+						
+						
+						<div class="form-group">
+							<label for="lenddate">Lend Date:</label>
+							<input type="date" id="lenddate" name="lenddate" class = "defaultdate" disabled>
+						</div>
+						
+						<div class="form-group">
+							<label for="birthday">Return Date:</label>
+							<input type="date" id="returndate" name="returndate"  disabled>
+						</div>
+ 
+
+						<div class="form-group">
+							<input type="button" class = "issue-return" id="btnissuebook" value="Issue Book" />
+							<input type="button" id="btnclear"  value="cancel" onclick="reset()" />
+						</div>
+
+<div class="error" style="display: none"><i class="fa fa-check"></i>Selected book already issued to this student</div>
+
+					</form>
+			
+
+		</div>
+	</div>
+</body>
+</html>

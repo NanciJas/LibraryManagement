@@ -1,0 +1,150 @@
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="_layout">
+
+<head>
+
+
+
+
+<meta charset="ISO-8859-1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/script.js"></script>
+
+<link rel="stylesheet" href="/style.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+
+		<div class="container mt-5">
+
+
+			<!-- 	<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >  -->
+			<div class="modal fade" tabindex="-1" role="dialog" id="myModal"
+				aria-labelledby="myLargeModalLabel" aria-hidden="true"
+				data-backdrop="static">
+
+				<div class="modal-dialog modal-lg">
+
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Update Student
+								Details</h4>
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div class="tab-pane active" id="update">
+
+
+										<input type="text" id="txtId" hidden> <label>Name</label>
+										<input type="text" id="name"></br> <label>Age</label> <input
+											type="number" id="age"> </br> <label>Gender</label> <input
+											type="text" id="gender"> </br> <input type="button"
+											value="Add Student" id="btnstudent">
+
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- <div>
+  
+ <input type = "text" name = "keyword" class = "keyword" id = "keyword" size="50" placeholder="Search Students.."  required /> 
+    &nbsp;
+    <input type="button"  value="Search"  id="btnsearch">
+    &nbsp;
+    <input type="button" value="Clear" id="btnClear" onclick="reset()" />
+</div> -->
+
+
+
+		
+		
+		 
+		 <div class=" row no-gutters mt-3 align-items-center">
+				<div class="col col-md-4">
+					<input type="search" name="keyword" class="form-control border-secondary rounded-pill pr-5 keyword" id="keyword"
+						size="50" placeholder="Search Students.." required />
+						</div>
+						<div class="col-auto">
+					<button type="submit" class="btnsearch btn-outline-light text-dark border-0 rounded-pill ml-n5 " id="btnsearch">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div>    
+	
+     
+<div class="entrydiv">
+			<label for="entry">Choose number of entries:</label>
+			 <select
+				id="entry" name="entry">
+				<option value=5>5</option>
+				<option value=10>10</option>
+				<option value=20>20</option>
+				<option value=50>50</option>
+			</select>
+</div>
+			<table class="table table-striped table-advance table-hover"
+				id="dtable">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Age</th>
+						<th>Gender</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+
+
+			<div class="not-found" style="display: none">No records found</div>
+			<!-- <div class="alert alert-danger" id="no-rows-alert" style="display: none">No records found</div> -->
+		</div>
+
+		<div class="row mt-4 content-center">
+			<div class="col-md-6">
+				<ul class="pagination" id="page_container">
+				</ul>
+			</div>
+
+
+		</div>
+	</div>
+	</div>
+</body>
+</html>

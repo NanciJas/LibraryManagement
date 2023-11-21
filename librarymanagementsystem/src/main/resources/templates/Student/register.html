@@ -1,0 +1,69 @@
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="_layout">
+
+<head>
+
+<meta charset="ISO-8859-1">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="/script.js"></script>
+
+<link rel="stylesheet" href="/style.css">
+
+
+</head>
+
+<body>
+	<div layout:fragment="content">
+
+
+		<div class="container mt-5">
+
+			<div class="card" style="width: 55rem;">
+				<div class="card-header text-center bg-info ">
+					<h3>Register</h3>
+				</div>
+				<div class="card-body">
+					<form id='formId' action='/'>
+						<div class="form-group">
+							<label for="user-name">Name</label> <input type="text" id="name"
+								name="name"></input>
+						</div>
+
+						<div class="form-group">
+							<label for="user-name">Age</label> <input type="number" id="age"
+								name="age"></input>
+						</div>
+
+
+						<div class="form-group">
+							<input type="radio" id=gender class="gender" name="gender"
+								value="Male" /> <label for="java">Male</label> <input
+								type="radio" id=gender class="gender" name="gender"
+								value="Female" /> <label for="html">Female</label>
+						</div>
+						<div class="form-group">
+							<input type="button" id="btnAddStudent" value="Add Student" />
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+
+</body>
+</html>
