@@ -49,7 +49,7 @@ public class TransactionController {
 
 	@Autowired
 	TransactionService transactionService;
-	FileStorageService fileStorageService;
+	//FileStorageService fileStorageService;
 
 	 private static String FILE_FOLDER = "D:\\tempflod\\";
 	

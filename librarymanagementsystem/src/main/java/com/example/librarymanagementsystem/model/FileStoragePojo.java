@@ -2,6 +2,13 @@ package com.example.librarymanagementsystem.model;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+
+
+
+
+////////Not Used
+
+
 @ConfigurationProperties(prefix = "file")
 	public class FileStoragePojo {
 
