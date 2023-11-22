@@ -1,5 +1,6 @@
 package com.example.librarymanagementsystem.serviceimpl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,12 @@ public class StudentsServiceImpl implements StudentsService {
 		
 		
 		return s;
+	}
+
+	@Override
+	public Students addStudentInfo(Students students) throws SQLException {
+		return studentsDao.addStudentInfo(students);
+		
 	}
 	 
 }

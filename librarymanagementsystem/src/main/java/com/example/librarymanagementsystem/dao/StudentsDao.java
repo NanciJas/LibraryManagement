@@ -1,5 +1,6 @@
 package com.example.librarymanagementsystem.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -22,4 +23,8 @@ public interface StudentsDao {
 	
 	
 	public Students addStudents(Students students);
+	
+	public Students addStudentInfo(Students students) throws SQLException;
+	
+	
 }

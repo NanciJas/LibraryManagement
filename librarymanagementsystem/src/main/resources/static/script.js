@@ -25,7 +25,24 @@ var bookId = "";
 
 //////////////////////////*****************    Student Page         ************************//////////////////////////////////////////////
 
+$(document).ready(function() {
+		generateStudentId();
+		
+	});
 
+function generateStudentId(){
+	$.ajax({
+			type: "POST",
+			url: 'http://localhost:8080/studentsCounter/getStudentId',
+			//dataType: "json",
+			success: function(data) {
+				
+				console.log("Data : " +data);
+
+				$('#studentId').val(data);
+			}
+		});
+}
 
 
 $(document).ready(function() {
@@ -35,6 +52,7 @@ $(document).ready(function() {
 	$('#btnstudent').click(function() {
 
 		student.id = $('#txtId').val();
+		student.studentId = $('#studentId').val();
 		student.name = $('#name').val();
 		student.age = $('#age').val();
 		student.gender = $('#gender').val();
@@ -46,7 +64,7 @@ $(document).ready(function() {
 			methodName = "PUT";
 		} else {
 			//save it
-			dynamicURL = "http://localhost:8080/students/create";
+			dynamicURL = "http://localhost:8080/students/addStudentInfo";
 			methodName = "POST";
 		}
 		var studentObj = JSON.stringify(student);
@@ -156,7 +174,7 @@ function fetch_data(pagenum) {
 	studentPaginate.keyword = $('#keyword').val();
 
 	var studentObj = JSON.stringify(studentPaginate);
-	console.log("studentObj  : " + studentObj);
+	//console.log("studentObj  : " + studentObj);
 	$
 		.ajax({
 			url: '//localhost:8080/students/getStudents',
@@ -187,9 +205,11 @@ function fetch_data(pagenum) {
 						.each(
 							function(index, element) {
 								tableBody
-									.append('<tr><td>'
+									.append('<tr><td hidden>'
 										+ element.id
 										+ '</td><td>'
+										+element.studentId
+										+'</td><td>'
 										+ element.name
 										+ '</td><td>'
 										+ element.age
@@ -252,12 +272,13 @@ $(document).ready(function() {
 	//var student = {};
 
 	$('#btnAddStudent').click(function() {
+		student.studentId = $('#studentId').val();
 		student.name = $('#name').val();
 		student.age = $('#age').val();
 		student.gender = $(".gender:checked").val();
 		var studentJSON = JSON.stringify(student);
 		$.ajax({
-			url: 'http://localhost:8080/students/create',
+			url: 'http://localhost:8080/students/addStudentInfo',
 			method: 'POST',
 			data: studentJSON,
 			contentType: "application/json; charset=utf-8",

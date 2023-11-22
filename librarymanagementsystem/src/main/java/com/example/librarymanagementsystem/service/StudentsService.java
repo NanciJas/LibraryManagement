@@ -1,6 +1,7 @@
 package com.example.librarymanagementsystem.service;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -26,6 +27,9 @@ public interface StudentsService {
 	
 	
 	public Students addStudents(Students students);
+	
+	
+	public Students addStudentInfo(Students students) throws SQLException;
 	
 	
 }

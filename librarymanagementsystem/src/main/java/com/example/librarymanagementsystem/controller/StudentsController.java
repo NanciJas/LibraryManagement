@@ -34,8 +34,6 @@ import com.example.librarymanagementsystem.service.StudentsService;
 public class StudentsController {
 	@Autowired
 	StudentsService studentsService;
-	StudentCounterService studentCounterService;
-	
 	
 	
 	 @PostMapping("/add") 
@@ -86,5 +84,13 @@ public class StudentsController {
 		return studentsService.getStudents(paginateStudent);	
 	}
 	
+	
+
+	 @PostMapping("/addStudentInfo") 
+	    public Students addStuentInfo(@RequestBody Students students) throws Exception{ 
+		// System.out.println("Studnets  : "+students.getAge());
+		 return studentsService.addStudentInfo(students);
+	    } 
+	 
 	
 }

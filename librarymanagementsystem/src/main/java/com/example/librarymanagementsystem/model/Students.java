@@ -16,9 +16,6 @@ public class Students {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	//@Column(name = "studentid")
-	//private String studentid;
-	
 	
 	@Column(name = "name")
 	private String name;
@@ -30,12 +27,13 @@ public class Students {
 	private String gender;
 	
 	
-	@OneToOne
-	@JoinColumn(name = "studentcounter")
-    private StudentCounter studentcounter;
+
 	
 	@Column(name = "studentId")
 	private String studentId;
+	
+	
+	
 	
 	public int getId() {
 		return id;
@@ -61,21 +59,15 @@ public class Students {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public StudentCounter getStudentcounter() {
-		return studentcounter;
-	}
-	public void setStudentcounter(StudentCounter studentcounter) {
-		this.studentcounter = studentcounter;
-	}
-	
-	
-	
 	public String getStudentId() {
 		return studentId;
 	}
 	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
+
+	
+	
 	
 	
 }
