@@ -35,19 +35,23 @@ public class StudentsController {
 	@Autowired
 	StudentsService studentsService;
 	
+//	
+//	 @PostMapping("/add") 
+//	    public ResponseEntity<Students> addStuent(@RequestBody Students Students) throws Exception{ 
+//		 Students student = this.studentsService.addStudents(Students);
+//	        return new ResponseEntity<Students>(student, HttpStatus.CREATED); 
+//	    } 
 	
-	 @PostMapping("/add") 
-	    public ResponseEntity<Students> addStuent(@RequestBody Students Students) throws Exception{ 
-		 Students student = this.studentsService.addStudents(Students);
-	        return new ResponseEntity<Students>(student, HttpStatus.CREATED); 
-	    } 
+	
+//	@PostMapping("/create")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public void addStuents(@RequestBody Students students) {
+//		studentsService.addStudent(students);
+//	}
 	
 	
-	@PostMapping("/create")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void addStuents(@RequestBody Students students) {
-		studentsService.addStudent(students);
-	}
+	
+	
 	
 	@GetMapping("/get/{id}")
 	public Students getStudent(@PathVariable int id) {
@@ -88,7 +92,6 @@ public class StudentsController {
 
 	 @PostMapping("/addStudentInfo") 
 	    public Students addStuentInfo(@RequestBody Students students) throws Exception{ 
-		// System.out.println("Studnets  : "+students.getAge());
 		 return studentsService.addStudentInfo(students);
 	    } 
 	 

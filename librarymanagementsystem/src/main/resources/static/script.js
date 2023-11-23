@@ -308,6 +308,8 @@ $(document).on("click", "#btndailyreport", function() {
 		method: 'GET',
 		success: function() {
 			$('.success').css('display', 'block');
+			$('.successdownload').css('display', 'none');
+			$('.error').css('display', 'none');
 			//$('.generatedailyreport').css('display', 'none');
 
 		},
@@ -665,6 +667,12 @@ function getAllTransaction() {
 */
 
 
+$(document).on("change", "#fileupload", function() {
+		$('.error').css('display', 'none');
+		$('.successdownload').css('display', 'none');
+		$('.success').css('display', 'none');
+	});
+
 $(document).on("click", "#btndailyreportdownload", function() {
 	var fi = document.getElementById('fileupload'); // GET THE FILE INPUT AS VARIABLE.
 	console.log(" fi :" + fi.files.length)
@@ -674,6 +682,7 @@ $(document).on("click", "#btndailyreportdownload", function() {
 
 	// VALIDATE OR CHECK IF ANY FILE IS SELECTED.
 	if (fi.files.length > 0) {
+		//$('.error').css('display', 'none');
 		// RUN A LOOP TO CHECK EACH SELECTED FILE.
 		for (var i = 0; i <= fi.files.length - 1; i++) {
 			//ACCESS THE SIZE PROPERTY OF THE ITEM OBJECT IN FILES COLLECTION. IN THIS WAY ALSO GET OTHER PROPERTIES LIKE FILENAME AND FILETYPE
@@ -683,6 +692,9 @@ $(document).on("click", "#btndailyreportdownload", function() {
 		downloadFile(name);
 	} else {
 		$('.error').css('display', 'block');
+			$('.successdownload').css('display', 'none');
+		$('.success').css('display', 'none');
+
 	}
 
 });
@@ -697,6 +709,9 @@ async function downloadFile(name) {
 	});
 	var url = response.url;
 	window.open(url, '_blank');
+	$('.successdownload').css('display', 'block');
+	$('.success').css('display', 'none');
+	$('.error').css('display', 'none');
 	console.log("urlll :   " + url);
 
 }

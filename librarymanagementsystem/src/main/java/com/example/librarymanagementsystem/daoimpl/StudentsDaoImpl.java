@@ -90,17 +90,14 @@ public class StudentsDaoImpl implements StudentsDao{
 
 			
 			if( (students.getAge() <=0) || (students.getGender() == null)|| (students.getName()==null) ||(students.getStudentId() == null)) {
-				//System.out.println("Students  :  "+students.getStudentId());
 				throw new Exception("Invalid data");
 			}
 			
 			
 			
-			 PreparedStatement preparedStatement1 = connection.prepareStatement(update);
+			PreparedStatement preparedStatement1 = connection.prepareStatement(update);
 			preparedStatement1.setInt(1, count);
 			preparedStatement1.executeUpdate();
-			
-		
 			
 			connection.commit();
 			
