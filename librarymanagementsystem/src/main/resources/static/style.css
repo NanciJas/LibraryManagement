@@ -71,7 +71,7 @@
 }
 
 
-.keyword {
+.keyword,.keywordbook {
 	width: 100%;
 	
 	border-right: none;
@@ -85,7 +85,11 @@
 	color: #00B4CC;
 }
 
-.searchButton {
+.keywordbook:focus {
+	color: #00B4CC;
+}
+
+.searchButton{
 	width: 40px;
 	height: 36px;
 	border: 1px solid #00B4CC;
@@ -116,7 +120,7 @@
 .fa{
 	    color: #0d6efd;
 }
-.btnsearch{
+.btnsearch,btnsearchbook{
 	position: absolute;
     top: 108px;
     display: inline-block;
@@ -168,5 +172,20 @@
   background-color: rgb(255, 0, 0);
   text-align: center;
 }   
-    
+  .input-container{
+    width: 250px;
+    border: 1px solid #a9a9a9;
+    display: inline-block;
+}
+.input-container input:focus, .input-container input:active {
+    outline: none;
+}
+.input-container input {
+    width: 80%;
+    border: none;
+}
+
+.input-container button {
+    float: right;
+}  
     

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.PaginateStudent;
 
 public interface BookService {
 	public void addBook(Books book);
@@ -18,6 +19,7 @@ public interface BookService {
 	public List<Books> searchBookByIsbn(String name);
 	public List<Books> searchBookByGenre(String name);
 	//public List<Books> searchBookByGenre();
+	public PaginateStudent getBooks(PaginateStudent paginateStudent);
 	
 	
 }

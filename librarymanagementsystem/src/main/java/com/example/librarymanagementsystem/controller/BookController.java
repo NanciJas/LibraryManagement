@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.PaginateStudent;
 import com.example.librarymanagementsystem.model.Students;
 import com.example.librarymanagementsystem.service.BookService;
 
@@ -71,4 +72,8 @@ public class BookController {
 		return bookService.searchBookByGenre(name);
 	}
 
+	@PostMapping("/getBooks")
+	public PaginateStudent getBooks(@RequestBody PaginateStudent paginateStudent){
+		return bookService.getBooks(paginateStudent);	
+	}
 }

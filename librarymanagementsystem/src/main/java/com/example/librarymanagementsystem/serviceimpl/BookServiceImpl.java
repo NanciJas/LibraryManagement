@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.librarymanagementsystem.dao.BookDao;
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.PaginateStudent;
 import com.example.librarymanagementsystem.service.BookService;
 
 @Service
@@ -66,5 +67,15 @@ public class BookServiceImpl implements BookService{
 		return bookDao.searchBookByGenre(name);
 	}
 
-	
+	@Override
+	public PaginateStudent getBooks(PaginateStudent paginateStudent) {
+		int pageNo = paginateStudent.getPageNo();
+		int limit = paginateStudent.getPageSize();
+		String keyword = paginateStudent.getKeyword();
+		 int offset = (pageNo - 1) * limit;
+		 paginateStudent.setOffset(offset);
+		
+		return bookDao.getBooks(paginateStudent);
+
+	}
 }

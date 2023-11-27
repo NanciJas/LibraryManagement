@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.PaginateStudent;
 import com.example.librarymanagementsystem.model.Students;
 
 public interface BookDao {
@@ -19,6 +20,7 @@ public interface BookDao {
 	public List<Books> searchBookByAuthor(String name);
 	public List<Books> searchBookByIsbn(String name);
 	public List<Books> searchBookByGenre(String name);
-	//public List<Books> searchBookByGenre();
+
+	PaginateStudent getBooks(PaginateStudent paginateStudent);
 
 }

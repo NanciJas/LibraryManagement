@@ -15,4 +15,5 @@ public interface TransactionService {
 	public int calculatePenalty(int id);
 	public List<Transaction> getTransactionByName(String name);
 	public List<Transaction> getTransactionByStudentId(int id);
+
 }

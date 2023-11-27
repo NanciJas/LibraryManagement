@@ -10,20 +10,19 @@
 	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
 	crossorigin="anonymous">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.js"></script>
-    
-    <script src="/script.js"></script>
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/script.js"></script>
 
 <link rel="stylesheet" href="/style.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 
 
@@ -37,70 +36,135 @@
 
 <body>
 
-	<div layout:fragment="content">
+
+<div layout:fragment="content">
+
+
 		<div class="container mt-5">
 
-			<div class="card" style="width: 55rem;">
-				<div class="card-header text-center bg-info ">
-					<h3>Student Details</h3>
-				</div>
-				<div class="card-body">
-					
-        <table>
-                <td><input type="text" id = "txtId" hidden></td>
-            
-          
-             <tr>
-                <td>Book Name</td>
-                <td><input type="text" id = "bookName"></td>
-            </tr>
-             <tr>
-                <td>Author Name</td>
-                <td><input type="text" id = "authorName"></td>
-            </tr>
-            <tr>
-                <td> isbn</td>
-                <td><input type="text" id = "isbn"></td>
-            </tr>
-            <tr>
-                <td> Genre</td>
-                <td><div class="form-group">
-                
-							 <select id="genre"
+
+			<!-- 	<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" >  -->
+			<div class="modal fade" tabindex="-1" role="dialog" id="myModal"
+				aria-labelledby="myLargeModalLabel" aria-hidden="true"
+				data-backdrop="static">
+
+				<div class="modal-dialog modal-lg">
+
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Update Book
+								Details</h4>
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div class="tab-pane active" id="update">
+
+
+							
+										<input type="text" id="bookId" hidden>  </br>
+										 <label>bookName</label>
+										<input type="text" id="bookName" > </br>
+										<label>authorName</label>
+										<input type="text" id="authorName"></br> 
+										<label>isbn</label>
+										 <input	type="text" id="isbn"> </br>
+										 <label >Genre</label> 
+										 <select id="genre"
 								name="genre">
 								<option id=gen value=""></option>
 							</select>
-						</div></td>
-            </tr>
-            
-            <tr colspan = "2">
-                <td><input type="button" value="Add Book" id="btnAddBook"></td>
-            </tr>
-        </table>
-        
-        
-        <table class="table table-striped table-advance table-hover"
-						id="tblBook">
-       
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>BookName</th>
-                    <th>Authorname</th>
-                    <th>isbn</th>
-                     <th>Genre</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+										<input type="button"	value="Update Book" id="btnUpdateBook">
 
-            </tbody>
-            
-            
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+			</div>
+			
+			
+		 <!-- 
+		 <div class=" row no-gutters mt-3 align-items-center">
+				<div class="col col-md-4">
+					<input type="search" name="keyword" class="form-control border-secondary rounded-pill pr-5 keywordbook" id="keywordbook"
+						size="50" placeholder="Search books" required />
+						
+					<button type="submit" class="btnsearchbook btn-outline-light text-dark border-0 rounded-pill ml-n5 " id="btnsearchbook">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div> 
+			  -->
+			
+			
+			 
+		 <div class=" row no-gutters mt-3 align-items-center">
+				<div class="col col-md-4">
+					<input type="search" name="keyword" class="form-control border-secondary rounded-pill pr-5 keyword" id="keywordbook"
+						size="50" placeholder="Search Students.." required />
+						</div>
+						<div class="col-auto">
+					<button type="submit" class="btnsearch btn-outline-light text-dark border-0 rounded-pill ml-n5 " id="btnsearchbook">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div>    
+	
+	
+     
+<div class="entrydiv">
+			<label for="entry">Choose number of entries:</label>
+			 <select
+				id="entry" name="entry">
+				<option value=5>5</option>
+				<option value=10>10</option>
+				<option value=20>20</option>
+				<option value=50>50</option>
+			</select>
+</div>
+
+			<table class="table table-striped table-advance table-hover"
+				id="dtablebook">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Book Name</th>
+						<th>Author Name</th>
+						<th>ISBN</th>
+						<th>Genre</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+
+
+			<div class="not-found" style="display: none">No records found</div>
+			<!-- <div class="alert alert-danger" id="no-rows-alert" style="display: none">No records found</div> -->
+		
+
+		<div class="row mt-4 content-center">
+			<div class="col-md-6">
+				<ul class="pagination" id="page_container">
+				</ul>
 			</div>
 		</div>
 	</div>
+	
+</div>
+
+
 </body>
 
 </html>

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.librarymanagementsystem.dao.BookDao;
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.PaginateStudent;
+import com.example.librarymanagementsystem.model.Students;
 import com.example.librarymanagementsystem.repository.BooksRepo;
 
 @Repository
@@ -64,5 +66,38 @@ public class BookDaoImpl implements BookDao{
 		
 		return bookRepo.findByGenre(name);
 	}
+
+	@Override
+	public PaginateStudent getBooks(PaginateStudent paginateStudent) {
+		PaginateStudent pgst = new PaginateStudent();
+		List<Books> books;
+		int count;
+		int offset = paginateStudent.getOffset();
+		int pageNo = paginateStudent.getPageNo();
+		int limit = paginateStudent.getPageSize();
+		String keyword = paginateStudent.getKeyword();
+		if(keyword == "") {
+			books = bookRepo.getBooks(limit, offset);
+			 count = bookRepo.getCount();
+		}
+		else {
+			books =bookRepo.searchBooks(limit, offset,keyword);
+			 count = bookRepo.searchBooksCount(keyword);
+		}
+		
+		System.out.println("count  "+count);
+		System.out.println("students  "+books);
+		pgst.setCount(count);
+		pgst.setBookList(books);
+		pgst.setPageNo(pageNo);
+		pgst.setOffset(offset);
+		pgst.setPageSize(limit);
+		pgst.setKeyword(keyword);
+		return pgst;
+		
+	}
+
+	
+		
 
 }
