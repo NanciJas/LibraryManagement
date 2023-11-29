@@ -952,16 +952,16 @@ $(document).ready(function() {
 	$(document).on("change", "#entry", function() {
 		fetch_dataBook(pagenum);
 	});
-
-$('#keywordbook').on('keyup', function(event) { // Fired on 'keyup' event
-
-		//keyword = $('#keywordbook').val();
+	
+	
+	
+	$(document).on('keyup','.keywordbook', function(event) { // Fired on 'keyup' event
+		console.log("asdfsdf");
+		keyword = $('#keywordbook').val();
 		fetch_dataBook(pagenum);
-		console.log("keywordbook");
-
 	});
-	
-	
+
+
 
 	function fetch_dataBook(pagenum) {
 		var bookPaginate = {};
