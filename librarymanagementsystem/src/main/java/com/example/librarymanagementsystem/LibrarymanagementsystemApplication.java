@@ -1,13 +1,20 @@
 package com.example.librarymanagementsystem;
 
+import java.util.Properties;
 import java.util.concurrent.Executor;
+
+import javax.mail.MessagingException;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import com.example.librarymanagementsystem.service.EmailService;
 
 
 
@@ -41,6 +48,9 @@ public class LibrarymanagementsystemApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LibrarymanagementsystemApplication.class, args);
+	
 	}
+	
+
 
 }

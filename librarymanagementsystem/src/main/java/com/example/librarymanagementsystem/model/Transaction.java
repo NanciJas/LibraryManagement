@@ -47,7 +47,8 @@ public class Transaction {
 	@Column(name = "book_status")
 	private String bookStatus;
 	
-	
+	@Column(name = "email")
+	private String email;
 	
 	
 	public int getId() {
@@ -120,6 +121,14 @@ public class Transaction {
 
 	public void setBookStatus(String bookStatus) {
 		this.bookStatus = bookStatus;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	
