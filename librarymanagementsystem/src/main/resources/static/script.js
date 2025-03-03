@@ -455,10 +455,11 @@ function calculatePenalty(s, b) {
 		console.log("fro loop " + globalarray.length);
 
 		if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id)) {
-			console.log("fro loop");
+			//console.log("fro loop ; "+ student.id);
+			//console.log("fro loop ; "+ books.id);
 
 			student.id = globalarray[i].students.id;
-
+			//console.log("fro loop ; "+ student.id);
 
 			pcount++;
 
@@ -468,7 +469,9 @@ function calculatePenalty(s, b) {
 		}
 
 	}
+	
 	if (pcount > 0) {
+		
 		$.ajax({
 			url: "transaction/penalty/" + student.id,
 			method: 'Get',
