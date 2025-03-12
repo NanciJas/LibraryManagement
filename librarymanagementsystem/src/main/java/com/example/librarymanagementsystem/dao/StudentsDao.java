@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.example.librarymanagementsystem.data.APIResponse;
 import com.example.librarymanagementsystem.model.PaginateStudent;
+import com.example.librarymanagementsystem.model.Randomstudents;
 import com.example.librarymanagementsystem.model.Students;
 
 public interface StudentsDao {
@@ -25,6 +26,11 @@ public interface StudentsDao {
 	public Students addStudents(Students students);
 	
 	public Students addStudentInfo(Students students) throws SQLException;
+	
+	
+//////////////////////////////
+	public void addRandomStudents(Randomstudents students);
+	
 	
 	
 }

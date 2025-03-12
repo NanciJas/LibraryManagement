@@ -1,16 +1,20 @@
 package com.example.librarymanagementsystem.service;
 
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.librarymanagementsystem.dao.StudentsDao;
 import com.example.librarymanagementsystem.data.APIResponse;
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.FileDetails;
 import com.example.librarymanagementsystem.model.PaginateStudent;
+import com.example.librarymanagementsystem.model.Randomstudents;
 import com.example.librarymanagementsystem.model.Students;
 
 
@@ -30,6 +34,11 @@ public interface StudentsService {
 	
 	
 	public Students addStudentInfo(Students students) throws SQLException;
+	
+
+	
+	void addRandomStudents(FileDetails fileDetails) throws Exception;
+	
 	
 	
 }

@@ -1,5 +1,6 @@
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="_layout">
+
 <head>
 
 <meta charset="ISO-8859-1">
@@ -12,64 +13,65 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/script.js"></script>
 
 <link rel="stylesheet" href="/style.css">
 
 
-
 </head>
-<body>
 
+<body>
 	<div layout:fragment="content">
+
 
 		<div class="container mt-5">
 
-			<div class="card" style="width: 35rem;">
+			<div class="card" style="width: 55rem;">
 				<div class="card-header text-center bg-info ">
-					<h3>Add Book</h3>
+					<h3>Register</h3>
 				</div>
 				<div class="card-body">
-					<form id='formId' action='/'  class="col-lg-6 offset-lg-3">
+					<form id='formId' action='/'>
+					
+					
+					<div class="form-group">
+							<label for="user-name">Student Id</label> 
+							<input type="text" id="studentId"name="studentId" readonly></input>
+						</div>
+					
 						<div class="form-group">
-							<label for="user-name">Book Name</label><div> <input type="text"
-								id="bookname" name="bookname"></input></div>
+							<label for="user-name">Name</label> <input type="text" id="name"
+								name="name"></input>
 						</div>
 
 						<div class="form-group">
-							<label for="user-name">Author Name</label>
-							<div> <input type="text"
-								id="authorname" name="authorname"></input></div>
+							<label for="user-name">Age</label> <input type="number" id="age"
+								name="age"></input>
 						</div>
+
 
 						<div class="form-group">
-							<label for="user-name">ISBN</label> 
-							<div><input type="text" id="isbn"
-								name="isbn"></input></div>
+							<input type="radio" id=gender class="gender" name="gender"
+								value="Male" /> <label for="java">Male</label> <input
+								type="radio" id=gender class="gender" name="gender"
+								value="Female" /> <label for="html">Female</label>
 						</div>
-
-						<div class="form-group">
-							<label for="user-name">Genre</label> <select id="genre"
-								name="genre">
-								<option id=gen value=""></option>
-							</select>
-						</div>
-
-
-
 						
-						<div class="col-md-4 col-md-offset-4 text-center">
-							<input type="button" id="btnAddBook" class = "btn btn-outline-primary" value="Add Book" />
-							</div>
+						
+						<div class="form-group">
+							<input type="button" id="btnAddStudent" value="Add Student" />
+						</div>
 
 					</form>
 				</div>
 			</div>
 		</div>
 
-	</div>
 
+
+	</div>
 
 
 </body>

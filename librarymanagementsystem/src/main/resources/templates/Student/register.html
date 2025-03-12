@@ -10,8 +10,7 @@
 	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
 	crossorigin="anonymous">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -28,43 +27,68 @@
 
 		<div class="container mt-5">
 
-			<div class="card" style="width: 55rem;">
+			<div class="card" style="width: 35rem;">
 				<div class="card-header text-center bg-info ">
 					<h3>Register</h3>
 				</div>
 				<div class="card-body">
-					<form id='formId' action='/'>
-					
-					
-					<div class="form-group">
-							<label for="user-name">Student Id</label> 
-							<input type="text" id="studentId"name="studentId" readonly></input>
-						</div>
-					
-						<div class="form-group">
-							<label for="user-name">Name</label> <input type="text" id="name"
-								name="name"></input>
-						</div>
-
-						<div class="form-group">
-							<label for="user-name">Age</label> <input type="number" id="age"
-								name="age"></input>
-						</div>
+					<form id='formId' action='/' class="col-lg-6 offset-lg-3">
 
 
 						<div class="form-group">
-							<input type="radio" id=gender class="gender" name="gender"
+							<label for="user-name">Student Id</label>
+							<div>
+								<input type="text" id="studentId" name="studentId" readonly></input>
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label for="user-name">Name</label>
+							<div>
+								<input type="text" id="name" name="name" required></input>
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label for="user-name">Age</label>
+							<div>
+								<input type="number" id="age" name="age"></input>
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label for="email">Gender</label>
+							<div></div>
+							<input type="radio" id=gender class="radio-inline" name="gender"
 								value="Male" /> <label for="java">Male</label> <input
 								type="radio" id=gender class="gender" name="gender"
 								value="Female" /> <label for="html">Female</label>
 						</div>
-						
-						
-						<div class="form-group">
-							<input type="button" id="btnAddStudent" value="Add Student" />
+
+
+						<div class="col-md-4 col-md-offset-4 text-center">
+							<input type="button" id="btnAddStudent"
+								class="btn btn-outline-primary" value="Add Student" />
 						</div>
 
 					</form>
+
+
+
+					<input type="file" id="fileInput" name="Select file" onchange ='getFileName()'>
+					<button id='btnUpload'>Upload</button>
+					<div class="col-md-4 col-md-offset-4 text-center">
+						<input type="button" id="btnAddRandomStudents"
+							class="btn btn-outline-primary" value="Add Random Student" />
+					</div>
+					
+
+
+
+
 				</div>
 			</div>
 		</div>

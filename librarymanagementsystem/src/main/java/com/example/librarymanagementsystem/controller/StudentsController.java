@@ -1,5 +1,7 @@
 package com.example.librarymanagementsystem.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.librarymanagementsystem.data.APIResponse;
 import com.example.librarymanagementsystem.model.Books;
+import com.example.librarymanagementsystem.model.FileDetails;
 import com.example.librarymanagementsystem.model.PaginateStudent;
+import com.example.librarymanagementsystem.model.Randomstudents;
 import com.example.librarymanagementsystem.model.Students;
 import com.example.librarymanagementsystem.service.StudentCounterService;
 import com.example.librarymanagementsystem.service.StudentsService;
@@ -93,6 +99,84 @@ public class StudentsController {
 	 @PostMapping("/addStudentInfo") 
 	    public Students addStuentInfo(@RequestBody Students students) throws Exception{ 
 		 return studentsService.addStudentInfo(students);
+	    } 
+	 
+	 
+	 
+///////////////////////////////////////////////	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+//	 
+//		@PostMapping("/create")
+//		@ResponseStatus(HttpStatus.CREATED)
+//		public void addRandomStuents(@RequestParam("file") MultipartFile file,@RequestBody Randomstudents students) {
+//			
+//			studentsService.addRandomStudents(students);
+//		}
+//		
+	 
+	 
+
+		@PostMapping("/create")
+		@ResponseStatus(HttpStatus.CREATED)
+		public void addRandomStuents(@RequestBody FileDetails fileDetails) throws Exception {
+					studentsService.addRandomStudents(fileDetails);
+		}
+
+	 
+	 @RequestMapping(value = "/upload", method = RequestMethod.POST) 
+	    public String uploadFile(@RequestParam("file") MultipartFile file){ 
+	  
+	        // Setting up the path of the file 
+	        //String filePath =System.getProperty("user.dir") + "/Uploads" ;
+		 	String filePath = "D:\\tempflod\\Uploads"+ File.separator + file.getOriginalFilename();
+	        String fileUploadStatus; 
+	          
+	        // Try block to check exceptions 
+	        try { 
+	              
+	            // Creating an object of FileOutputStream class   
+	            FileOutputStream fout = new FileOutputStream(filePath); 
+	            fout.write(file.getBytes()); 
+	              
+	            // Closing the connection  
+	            fout.close(); 
+	            fileUploadStatus = "File Uploaded Successfully"; 
+	              
+	        }  
+	        
+	        // Catch block to handle exceptions 
+	        catch (Exception e) { 
+	            e.printStackTrace(); 
+	            fileUploadStatus =  "Error in uploading file: " + e; 
+	        } 
+	        return fileUploadStatus; 
+	    } 
+	 
+	 
+	 
+	   @RequestMapping(value = "/getFiles", method = RequestMethod.GET) 
+	    public String[] getFiles() 
+	    { 
+	        String folderPath = "D:\\tempflod\\Uploads"; //System.getProperty("user.dir") +"/Uploads"; 
+	          
+	          // Creating a new File instance 
+	        File directory= new File(folderPath); 
+	          
+	        // list() method returns an array of strings  
+	          // naming the files and directories  
+	          // in the directory denoted by this abstract pathname 
+	        String[] filenames = directory.list(); 
+	          
+	        // returning the list of filenames 
+	        return filenames; 
+	          
 	    } 
 	 
 	

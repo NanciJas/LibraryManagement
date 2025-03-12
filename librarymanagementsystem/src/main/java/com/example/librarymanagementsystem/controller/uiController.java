@@ -39,6 +39,12 @@ public class uiController {
         return "Student/studentrecord";
 	}
 	
+	@GetMapping("/randomstudent")
+    public String studentrandom() {
+        return "Student/randomstudent";
+    }
+	
+	
 	@GetMapping("/book")
     public String book() {
         return "Book/addbook";

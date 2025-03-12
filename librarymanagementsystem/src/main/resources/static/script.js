@@ -1,3 +1,4 @@
+
 /**
  * 
  */
@@ -20,6 +21,7 @@ var transaction = {};
 var penalty = 0;
 var studentId = "";
 var bookId = "";
+var filepath = "";
 
 
 
@@ -294,795 +296,883 @@ $(document).ready(function() {
 	})
 });
 
-
-
-
-
-
-
-
-/////////////////////////////////********************* Generate Repot page          **************************////////////////////////////////////////////////////// */
-
-$(document).on("click", "#btndailyreport", function() {
-	$.ajax({
-		url: 'http://localhost:8080/transaction/record',
-		method: 'GET',
-		success: function() {
-			$('.success').css('display', 'block');
-			$('.successdownload').css('display', 'none');
-			$('.error').css('display', 'none');
-			//$('.generatedailyreport').css('display', 'none');
-
-		},
-		error: function(error) {
-			alert(error);
-		}
-	})
-});
-
-Date.prototype.addDays = function(days) {
-	var date = new Date(this.valueOf());
-	date.setDate(date.getDate() + days);
-	return date;
-}
-function addDays(theDate, days) {
-	return new Date(theDate.getTime() + days * 24 * 60 * 60 * 1000);
-}
-
-
-
-
-$(document).ready(
-	function() {
-
-
-		$.ajax({
-			type: "GET",
-			url: 'http://localhost:8080/students/getAllStudents',
-			dataType: "json",
-			success: function(data) {
-
-				var s = '<option value="-1"> Select Student</option>';
-				for (var i = 0; i < data.length; i++) {
-					s += '<option value="' + data[i].id + '">'
-						+ data[i].name + '(' + data[i].id + ') </option>';
-				}
-				$("#studentname").html(s);
-			}
-		});
-	});
-
-
-
-
-$(document).ready(
-	function() {
-		$.ajax({
-			type: "GET",
-			url: 'http://localhost:8080/books/getAllBooks',
-			dataType: "json",
-			success: function(data) {
-
-				var s = '<option value="-1"> Select Book</option>';
-				for (var i = 0; i < data.length; i++) {
-					s += '<option value="' + data[i].id + '">'
-						+ data[i].bookName + '</option>';
-				}
-				$("#bookname").html(s);
-			}
-		});
-	});
-
-
-
-
-
-$(document).ready(
-	function() {
-
-		$('#lenddate').val(new Date().toISOString().slice(0, 10));
-		var newDate = addDays(new Date(), 30);
-		var rdate = newDate.toISOString().slice(0, 10);
-		$('#returndate').val(rdate);
-
-		$('#rdate').val(new Date().toISOString().slice(0, 10));
-	});
-
-
-
-
+//var randomNames = {};
+ //var filename = '';
 
 $(document).ready(function() {
 
-	getAllTransaction();
-	$('#btnissuebook').click(function() {
-
-		student.id = $('#studentname').val();
-		books.id = $('#bookname').val();
-
-		for (var i = 0; i < globalarray.length; i++) {
-			console.log("fro loop")
-
-			if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id) && (globalarray[i].bookStatus == "lended")) {
-
-				$('.error').css('display', 'block');
-				return;
+	$('#btnUpload').click(function() {
+		var fileInput = $('#fileInput')[0].files[0];
+		if(fileInput){
+			var formdata = new FormData();
+			formdata.append('file', fileInput);
+			console.log("formdata :"+formdata);
+				$.ajax({
+					url:'http://localhost:8080/students/upload',
+					type:'POST',
+					data:formdata,
+					contentType:false,
+					processData:false,
+					success:function(response){
+						console.log('File Uploaded');
+						console.log(response);
+					},
+					error:function(xhr, status, error){
+						console.log("error uploadig file");
+						console.error(error);
+					}
+				});
+			}else{
+				console.log("please select a file");
 			}
+		});
+	});
 
+ var filename = '';
+function getFileName () {
+      fi = document.getElementById('fileInput'); 
+       var totalFileSize = 0;
+        if (fi.files.length > 0)
+        {
+            // RUN A LOOP TO CHECK EACH SELECTED FILE.
+            for (var i = 0; i <= fi.files.length - 1; i++)
+            {
+				filename = fi.files.item(i).name;
+			}
 		}
 
-		transaction.lendDate = $('#lenddate').val();
-		transaction.returnDate = $('#returndate').val();
-
-		transaction.bookStatus = "lended";
-		transaction.transactionStatus = "none";
-		transaction.students = student;
-		transaction.books = books;
-
-		var transactionObj = JSON.stringify(transaction);
-		$.ajax({
-			url: "transaction/create",
-			method: 'Post',
-			data: transactionObj,
-			contentType: 'application/json; charset=utf-8',
-			success: function(data) {
-				console.log(" data : " + data);
-				alert("saved");
-
-				document.getElementById("issueformId").reset();
-			},
-			error: function(error) {
-				alert(error);
-			}
-		})
-	})
-})
+      }
 
 
-
-
-
-
-function calculatePenalty(s, b) {
-
-	var id = 0;
-	student.id = parseInt(s);
-	books.id = parseInt(b);
-
-	var pcount = 0;
-	var ncount = 0
-	for (var i = 0; i < globalarray.length; i++) {
-		console.log("fro loop " + globalarray.length);
-
-		if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id)) {
-			//console.log("fro loop ; "+ student.id);
-			//console.log("fro loop ; "+ books.id);
-
-			student.id = globalarray[i].students.id;
-			//console.log("fro loop ; "+ student.id);
-
-			pcount++;
-
-		} else {
-
-			ncount++;
-		}
-
-	}
-	
-	if (pcount > 0) {
+$(document).ready(function() {
+	$('#btnAddRandomStudents').click(function() {
 		
-		$.ajax({
-			url: "transaction/penalty/" + student.id,
-			method: 'Get',
-			contentType: 'application/json; charset=utf-8',
-			success: function(data) {
-				penalty = data;
-				console.log("penalty : " + penalty);
-
-				$('.error').css('display', 'none');
-
-				var s = '<output name="result" for="btnpenalty"> Penalty : ' + penalty + '</output>';
-
-				$("#op").html(s);
-
-
-
-			},
-			error: function(error) {
-				alert(error);
-			}
-
-		})
-
-	} else {
-		$('.error').css('display', 'block');
-	}
-
-
-}
-
-
-
-function updateTransaction(transaction) {
-
-	var transactionObj = JSON.stringify(transaction);
-	console.log("transactionObj  : " + transactionObj)
-	$.ajax({
-
-
-
-		url: '/transaction/update',
-		method: 'PUT',
-		data: transactionObj,
-		contentType: 'application/json; charset=utf-8',
-		success: function() {
-
-			alert('Saved successfully');
-
-		},
-		error: function(error) {
-			alert(error);
-		}
-
-
-
-
-	})
-
-}
-
-
-function returnBook(s, b, r) {
-	var id = 0;
-	var lenddate = '';
-	var returndate = '';
-	var transactionStatus = '';
-
-	student.id = parseInt(s);
-	books.id = parseInt(b);
-	returndate = r;
-	console.log("returndate " + returndate);
-	var pcount = 0;
-	var ncount = 0
-	for (var i = 0; i < globalarray.length; i++) {
-		console.log("fro loop " + globalarray.length);
-
-		if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id)) {
-			console.log("fro loop");
-
-			student.id = globalarray[i].students.id;
-
-			id = globalarray[i].id;
-
-			lenddate = globalarray[i].lendDate;
-			bookStatus = globalarray[i].bookStatus;
-			transactionStatus = globalarray[i].transactionStatus;
-
-			pcount++;
-
-		} else {
-
-			ncount++;
-		}
-
-	}
-	if (pcount > 0) {
-		$.ajax({
-			url: "transaction/penalty/" + student.id,
-			method: 'Get',
-			contentType: 'application/json; charset=utf-8',
-			success: function(data) {
-				penalty = data;
-				console.log("penalty : " + penalty);
-
-
-				transaction.id = id;
-				transaction.bookStatus = "returned";
-				transaction.lendDate = lenddate;
-				console.log("student.id  : " + student)
-
-				transaction.penalty = penalty;
-
-				transaction.returnDate = returndate;
-
-				transaction.transactionStatus = transactionStatus;
-
-
-				transaction.students = student;
-				transaction.books = books;
-				$('.error').css('display', 'none');
-
-				updateTransaction(transaction);
-			},
-			error: function(error) {
-				alert(error);
-			}
-
-		})
-
-	} else {
-		$('.error').css('display', 'block');
-	}
-
-}
-
-
-
-
-$(document).ready(function() {
-	getAllTransaction();
-	$('#btnreturnbook').click(function() {
-		var s = $('#studentname').val();
-		var b = $('#bookname').val();
-		var r = $('#rdate').val();
-
-		returnBook(s, b, r);
-
-	})
-})
-
-
-
-$(document).ready(function() {
-	getAllTransaction();
-	$('#btnpenalty').click(function() {
-		var s = $('#studentname').val();
-		var b = $('#bookname').val();
-
-		calculatePenalty(s, b);
-
-	})
-})
-
-
-
-function getAllTransaction() {
-	$.ajax({
-		url: "transaction/getAllTransaction",
-		method: 'Get',
-		contentType: 'application/json; charset=utf-8',
-		success: function(data) {
-			globalarray = data;
-		},
-		error: function(error) {
-			alert(error);
-		}
-	})
-}
-
-
-
-
-/*async function uploadFile() {
-	let formData = new FormData();
-	formData.append("file", fileupload.files[0]);
-	console.log("formData  :" + fileupload.files[0])
-	let response = await fetch('transaction/upload', {
-		method: "POST",
-		body: formData
-	});
-	console.log("formData  :" + formData)
-	if (response.status == 200) {
-		alert("File successfully uploaded.");
-	}
-}
-
-*/
-
-
-$(document).on("change", "#fileupload", function() {
-	$('.error').css('display', 'none');
-
-
-	$('.successdownload').css('display', 'none');
-	$('.success').css('display', 'none');
-});
-
-$(document).on("click", "#btndailyreportdownload", function() {
-	var fi = document.getElementById('fileupload'); // GET THE FILE INPUT AS VARIABLE.
-	console.log(" fi :" + fi.files.length)
-	var totalFileSize = 0;
-	var name = '';
-
-
-	// VALIDATE OR CHECK IF ANY FILE IS SELECTED.
-	if (fi.files.length > 0) {
-		//$('.error').css('display', 'none');
-		// RUN A LOOP TO CHECK EACH SELECTED FILE.
-		for (var i = 0; i <= fi.files.length - 1; i++) {
-			//ACCESS THE SIZE PROPERTY OF THE ITEM OBJECT IN FILES COLLECTION. IN THIS WAY ALSO GET OTHER PROPERTIES LIKE FILENAME AND FILETYPE
-			name = fi.files.item(i).name;
-
-		}
-		downloadFile(name);
-	} else {
-		$('.error').css('display', 'block');
-		$('.successdownload').css('display', 'none');
-		$('.success').css('display', 'none');
-
-	}
-
-});
-
-
-
-
-async function downloadFile(name) {
-	let response = await fetch('transaction/download/' + name, {
-		method: "GET",
-
-	});
-	var url = response.url;
-	window.open(url, '_blank');
-	$('.successdownload').css('display', 'block');
-	$('.success').css('display', 'none');
-	$('.error').css('display', 'none');
-	console.log("urlll :   " + url);
-
-}
-
-
-
-
-
-
-
-////////////////////*********************   BOOK Page      ***************************************////////////////////////////////////////// */
-
-
-
-$(document).ready(function() {
-
-	var book = {};
-	var genre = {};
-	$('#btnAddBook').click(function() {
-		book.bookName = $('#bookname').val();
-		book.authorName = $('#authorname').val();
-		book.isbn = $('#isbn').val();
-		genre.id = $('#genre').val();
-		book.genre = genre;
-		console.log(book);
-
-		var studentJSON = JSON.stringify(book);
-		$.ajax({
-			url: 'http://localhost:8080/books/create',
-			method: 'POST',
-			data: studentJSON,
-			contentType: "application/json; charset=utf-8",
-			success: function() {
-				alert('Saved successfully!');
-				fetch_dataBook(pagenum);
-			},
-			error: function(error) {
-				alert(error);
-			}
-		})
-		document.getElementById("formId").reset();
-	})
-});
-
-$(document).ready(
-	function() {
-		$.ajax({
-			type: "GET",
-			url: 'http://localhost:8080/genre/getAllGenre',
-			dataType: "json",
-			success: function(data) {
-				var s = '<option value="-1"> Select Genre</option>';
-				for (var i = 0; i < data.length; i++) {
-					s += '<option value="' + data[i].id + '">'
-						+ data[i].genreName + '</option>';
-				}
-				$("#genre").html(s);
-			}
-		});
-	});
-
-
-var globalarray = [];
-var genreList = {};
-
-
-
-
-
-
-$(document).ready(function() {
-	$.ajax({
-		type: "GET",
-		url: 'http://localhost:8080/genre/getAllGenre',
-		dataType: "json",
-		success: function(data) {
-			genreList = data;
-			var s = '<option value="-1"> Select Genre</option>';
-			for (var i = 0; i < data.length; i++) {
-				s += '<option value="' + data[i].id + '">'
-					+ data[i].genreName + '</option>';
-			}
-			$("#genre").html(s);
-		}
-	});
-
-})
-
-
-
-
-	var book = {};
-	var genre = {};
-
-
-	$(document).ready(function() {
-
-		fetch_dataBook(pagenum);
-
-		$('#btnUpdateBook').click(function() {
-
-			book.id = $('#bookId').val();
-			book.bookName = $('#bookName').val();
-			book.authorName = $('#authorName').val();
-			book.isbn = $('#isbn').val();
-			genre.id = $('#genre').val();
-			book.genre = genre;
-
-			bookId = book.id;
-			console.log("bookId  : " + bookId);
-			if (bookId) {
-				//update it
-				dynamicURL = "/books/update"
-				methodName = "PUT";
-			} else {
-				//save it
-				dynamicURL = "http://localhost:8080/books/create";
-				methodName = "POST";
-			}
-			var bookObj = JSON.stringify(book);
-			console.log("bookObj  : " + bookObj);
-			console.log("methodName  : " + methodName);
+	
+	alert(filename);
+		var studentJSON = JSON.stringify(filename);
 			$.ajax({
-				url: dynamicURL,
-				method: methodName,
-				data: bookObj,
-				contentType: 'application/json; charset=utf-8',
+				url: 'http://localhost:8080/students/create',
+				method: 'POST',
+				data: studentJSON,
+				contentType: "application/json; charset=utf-8",
 				success: function() {
-
-					$('#myModal').modal('hide');
-					alert('Saved successfully');
-					fetch_dataBook(currentPageNumber);
+					alert('Saved successfully!');
 				},
 				error: function(error) {
 					alert(error);
 				}
 			})
-		})
+			document.getElementById("formId").reset();
+})
+
+});
+
+/*
+	
+  $.ajax({
+    type: "POST",
+    enctype: 'multipart/form-data',
+    url: "http://localhost:8080/students/upload",
+    data: data,
+    processData: false,
+    contentType: false,
+    cache: false,
+    timeout: 600000,
+    success: function (data) {
+      console.log("SUCCESS!");
+    },
+    error: function (e) {
+      console.log("ERROR : ", e);
+    }
+  });
+});    
+*/
+
+ 
 
 
 
-	})
+			/////////////////////////////////********************* Generate Repot page          **************************////////////////////////////////////////////////////// */
 
-	function getAllBooks() {
+			$(document).on("click", "#btndailyreport", function() {
+				$.ajax({
+					url: 'http://localhost:8080/transaction/record',
+					method: 'GET',
+					success: function() {
+						$('.success').css('display', 'block');
+						$('.successdownload').css('display', 'none');
+						$('.error').css('display', 'none');
+						//$('.generatedailyreport').css('display', 'none');
 
-		$.ajax({
-			url: "http://localhost:8080/books/getAllBooks",
-			method: "GET",
-			dataType: "json",
-			success: function(data) {
-				globalarray = data;
-				var tableBody = $('#tblBook tbody');
-				tableBody.empty();
-				$(data).each(function(index, element) {
-					//console.log("Genre : "+element.genre.genreName);
-					tableBody.append('<tr><td>' + element.id + '</td><td>' + element.bookName + '</td><td>' + element.authorName + '</td><td>' + element.isbn + '</td><td>' + element.genre.genreName + '</td><td><button onclick = "update(' + index + ')">Update</button> | <button onclick = "deleteBook(' + element.id + ')">Delete</button></td></tr>');
+					},
+					error: function(error) {
+						alert(error);
+					}
 				})
-			},
-			error: function(error) {
-				alert(error);
+			});
+
+			Date.prototype.addDays = function(days) {
+				var date = new Date(this.valueOf());
+				date.setDate(date.getDate() + days);
+				return date;
 			}
-		})
-	}
-
-	function deleteBook(id) {
-		$.ajax({
-			url: 'http://localhost:8080/books/delete/' + id,
-			method: 'DELETE',
-			success: function() {
-				alert('record has been deleted');
-				getAllBooks();
-			},
-			error: function(error) {
-				alert(error);
-			}
-		})
-	}
-
-	function update(index) {
-		//debugger;
-		var data = globalarrayBook[index];
-
-		console.log(genreList);
-		console.log("data  : " + data.isbn);
-
-		$('#bookId').val(data.id);
-		$('#bookName').val(data.bookName);
-		$('#authorName').val(data.authorName);
-		$('#isbn').val(data.isbn);
-		console.log("data.genre.authorName  :   " + data.authorName);
-		//$('#genre').val(data.genre.genreName);
-
-		// var s = '<option value="-1"> Select Genre</option>';
-
-
-		var s = '';
-		s = '<option value="-1"> Select Genre</option>';
-		for (var i = 0; i < genreList.length; i++) {
-			console.log("data.genre.genreName  :   " + data.genre.genreName);
-			console.log("genreList.genreName  : " + genreList[i].genreName);
-
-
-			if (data.genre.genreName == genreList[i].genreName) {
-				console.log("data.genre.genreName2  :   " + data.genre.genreName);
-
-				s += '<option value="' + genreList[i].id + '"  selected>' + genreList[i].genreName + '</option>';
+			function addDays(theDate, days) {
+				return new Date(theDate.getTime() + days * 24 * 60 * 60 * 1000);
 			}
 
-			else {
-				s += '<option value="' + genreList[i].id + '" >' + genreList[i].genreName + '</option>';
-			}
-		}
-		$("#genre").html(s);
-
-	}
-
-	function reset() {
-		$('#bookName').val('');
-		$('#authorName').val('');
-		$('#isbn').val('');
-		$('#genre').val('');
-		$('#txtId').val('');
-	}
 
 
 
-
-	$(document).on("click", "#btnsearchbook", function() {
-		keyword = $('#keywordbook').val();
-		console.log("search keyword  : " + keyword);
-
-		fetch_dataBook(pagenum);
-	});
-
-	$(document).on("change", "#entry", function() {
-		fetch_dataBook(pagenum);
-	});
-	
-	
-	
-	$(document).on('keyup','.keywordbook', function(event) { // Fired on 'keyup' event
-		console.log("asdfsdf");
-		keyword = $('#keywordbook').val();
-		fetch_dataBook(pagenum);
-	});
+			$(document).ready(
+				function() {
 
 
+					$.ajax({
+						type: "GET",
+						url: 'http://localhost:8080/students/getAllStudents',
+						dataType: "json",
+						success: function(data) {
 
-	function fetch_dataBook(pagenum) {
-		var bookPaginate = {};
-		var pageSize = $('#entry').val();
-		bookPaginate.pageSize = parseInt(pageSize);
-		bookPaginate.pageNo = pagenum;
-		bookPaginate.keyword = $('#keywordbook').val();
-
-		var bookObj = JSON.stringify(bookPaginate);
-		console.log("bookObj  : " + bookObj);
-		$
-			.ajax({
-				url: '/books/getBooks',
-				method: "post",
-				data: bookObj,
-				dataType: "json",
-				contentType: 'application/json; charset=utf-8',
-				success: function(data) {
-					globalarrayBook = data.bookList;
-					total_records = data.count;
-					//console.log("Value data.bookList : " + data.bookList.id);
-					total_pages = Math.ceil(total_records / bookPaginate.pageSize);
-					console.log("total_records  : " + total_records);
-					console.log("total_pages  : " + total_pages);
-					bookpagination(pagenum);
-					//console.log("Value  : " + data.bookList);
-					if (total_records <= 0) {
-						var tableBody = $('#dtablebook tbody');
-						tableBody.empty();
-						$('.not-found').css('display', 'block');
-						$('#page_container').css('display', 'none');
-					} else {
-						$('.not-found').css('display', 'none');
-						$('#page_container').css('display', 'block');
-						var tableBody = $('#dtablebook tbody');
-						tableBody.empty();
-
-						$(globalarrayBook)
-							.each(
-								function(index, element) {
-									tableBody
-										.append('<tr><td>'
-											+ element.id
-											+ '</td><td>'
-											+ element.bookName
-											+ '</td><td>'
-											+ element.authorName
-											+ '</td><td>'
-											+ element.isbn
-											+ '</td><td>'
-											+ element.genre.genreName
-											+ '</td><td><button  onclick = "update('
-											+ index
-											+ ')" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Update</button> | <button onclick = "deleteBook('
-											+ element.id
-											+ ')">Delete</button></td></tr>');
+							var s = '<option value="-1"> Select Student</option>';
+							for (var i = 0; i < data.length; i++) {
+								s += '<option value="' + data[i].id + '">'
+									+ data[i].name + '(' + data[i].id + ') </option>';
+							}
+							$("#studentname").html(s);
+						}
+					});
+				});
 
 
-								})
 
 
+			$(document).ready(
+				function() {
+					$.ajax({
+						type: "GET",
+						url: 'http://localhost:8080/books/getAllBooks',
+						dataType: "json",
+						success: function(data) {
+
+							var s = '<option value="-1"> Select Book</option>';
+							for (var i = 0; i < data.length; i++) {
+								s += '<option value="' + data[i].id + '">'
+									+ data[i].bookName + '</option>';
+							}
+							$("#bookname").html(s);
+						}
+					});
+				});
+
+
+
+
+
+			$(document).ready(
+				function() {
+
+					$('#lenddate').val(new Date().toISOString().slice(0, 10));
+					var newDate = addDays(new Date(), 30);
+					var rdate = newDate.toISOString().slice(0, 10);
+					$('#returndate').val(rdate);
+
+					$('#rdate').val(new Date().toISOString().slice(0, 10));
+				});
+
+
+
+
+
+			$(document).ready(function() {
+
+				getAllTransaction();
+				$('#btnissuebook').click(function() {
+
+					student.id = $('#studentname').val();
+					books.id = $('#bookname').val();
+
+					for (var i = 0; i < globalarray.length; i++) {
+						console.log("fro loop")
+
+						if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id) && (globalarray[i].bookStatus == "lended")) {
+
+							$('.error').css('display', 'block');
+							return;
+						}
 
 					}
 
-				},
-				error: function() {
-					$(".100_list_container").html("error");
+					transaction.lendDate = $('#lenddate').val();
+					transaction.returnDate = $('#returndate').val();
+
+					transaction.bookStatus = "lended";
+					transaction.transactionStatus = "none";
+					transaction.students = student;
+					transaction.books = books;
+
+					var transactionObj = JSON.stringify(transaction);
+					$.ajax({
+						url: "transaction/create",
+						method: 'Post',
+						data: transactionObj,
+						contentType: 'application/json; charset=utf-8',
+						success: function(data) {
+							console.log(" data : " + data);
+							alert("saved");
+
+							document.getElementById("issueformId").reset();
+						},
+						error: function(error) {
+							alert(error);
+						}
+					})
+				})
+			})
+
+
+
+
+
+
+			function calculatePenalty(s, b) {
+
+				var id = 0;
+				student.id = parseInt(s);
+				books.id = parseInt(b);
+
+				var pcount = 0;
+				var ncount = 0
+				for (var i = 0; i < globalarray.length; i++) {
+					console.log("fro loop " + globalarray.length);
+
+					if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id)) {
+						//console.log("fro loop ; "+ student.id);
+						//console.log("fro loop ; "+ books.id);
+
+						student.id = globalarray[i].students.id;
+						//console.log("fro loop ; "+ student.id);
+
+						pcount++;
+
+					} else {
+
+						ncount++;
+					}
+
 				}
+
+				if (pcount > 0) {
+
+					$.ajax({
+						url: "transaction/penalty/" + student.id,
+						method: 'Get',
+						contentType: 'application/json; charset=utf-8',
+						success: function(data) {
+							penalty = data;
+							console.log("penalty : " + penalty);
+
+							$('.error').css('display', 'none');
+
+							var s = '<output name="result" for="btnpenalty"> Penalty : ' + penalty + '</output>';
+
+							$("#op").html(s);
+
+
+
+						},
+						error: function(error) {
+							alert(error);
+						}
+
+					})
+
+				} else {
+					$('.error').css('display', 'block');
+				}
+
+
+			}
+
+
+
+			function updateTransaction(transaction) {
+
+				var transactionObj = JSON.stringify(transaction);
+				console.log("transactionObj  : " + transactionObj)
+				$.ajax({
+					url: '/transaction/update',
+					method: 'PUT',
+					data: transactionObj,
+					contentType: 'application/json; charset=utf-8',
+					success: function() {
+
+						alert('Saved successfully');
+
+					},
+					error: function(error) {
+						alert(error);
+					}
+
+
+
+
+				})
+
+			}
+
+
+			function returnBook(s, b, r) {
+				var id = 0;
+				var lenddate = '';
+				var returndate = '';
+				var transactionStatus = '';
+
+				student.id = parseInt(s);
+				books.id = parseInt(b);
+				returndate = r;
+				console.log("returndate " + returndate);
+				var pcount = 0;
+				var ncount = 0
+				for (var i = 0; i < globalarray.length; i++) {
+					console.log("fro loop " + globalarray.length);
+
+					if ((globalarray[i].students.id == student.id) && (globalarray[i].books.id == books.id)) {
+						console.log("fro loop");
+
+						student.id = globalarray[i].students.id;
+
+						id = globalarray[i].id;
+
+						lenddate = globalarray[i].lendDate;
+						bookStatus = globalarray[i].bookStatus;
+						transactionStatus = globalarray[i].transactionStatus;
+
+						pcount++;
+
+					} else {
+
+						ncount++;
+					}
+
+				}
+				if (pcount > 0) {
+					$.ajax({
+						url: "transaction/penalty/" + student.id,
+						method: 'Get',
+						contentType: 'application/json; charset=utf-8',
+						success: function(data) {
+							penalty = data;
+							console.log("penalty : " + penalty);
+
+
+							transaction.id = id;
+							transaction.bookStatus = "returned";
+							transaction.lendDate = lenddate;
+							console.log("student.id  : " + student)
+
+							transaction.penalty = penalty;
+
+							transaction.returnDate = returndate;
+
+							transaction.transactionStatus = transactionStatus;
+
+
+							transaction.students = student;
+							transaction.books = books;
+							$('.error').css('display', 'none');
+
+							updateTransaction(transaction);
+						},
+						error: function(error) {
+							alert(error);
+						}
+
+					})
+
+				} else {
+					$('.error').css('display', 'block');
+				}
+
+			}
+
+
+
+
+			$(document).ready(function() {
+				getAllTransaction();
+				$('#btnreturnbook').click(function() {
+					var s = $('#studentname').val();
+					var b = $('#bookname').val();
+					var r = $('#rdate').val();
+
+					returnBook(s, b, r);
+
+				})
+			})
+
+
+
+			$(document).ready(function() {
+				getAllTransaction();
+				$('#btnpenalty').click(function() {
+					var s = $('#studentname').val();
+					var b = $('#bookname').val();
+
+					calculatePenalty(s, b);
+
+				})
+			})
+
+
+
+			function getAllTransaction() {
+				$.ajax({
+					url: "transaction/getAllTransaction",
+					method: 'Get',
+					contentType: 'application/json; charset=utf-8',
+					success: function(data) {
+						globalarray = data;
+					},
+					error: function(error) {
+						alert(error);
+					}
+				})
+			}
+
+
+
+
+			
+			
+			/*async function uploadFile() {
+    let formData = new FormData();           
+    formData.append("file", fileupload1.files[0]);
+    console.log("formdata : "+formData);
+    await fetch('students/upload', {
+      method: "POST", 
+      body: formData
+    });    
+    alert('The file has been uploaded successfully.');
+}
+*/
+
+
+
+
+
+
+			$(document).on("change", "#fileupload", function() {
+				$('.error').css('display', 'none');
+
+
+				$('.successdownload').css('display', 'none');
+				$('.success').css('display', 'none');
 			});
-	}
 
-	function bookpagination(pagenum) {
-		$("#page_container").html("");
-		console.log("total_pages  : " + total_pages);
-		if (pagenum == 1) {
-			$("#page_container")
-				.append(
-					"<li class='page-item  disabled previous'><a href='javascript:void(0)'  class='pagenumber'>previous</a></li>");
-		} else {
-			$("#page_container")
-				.append(
-					"<li class='page-item' onclick='fetch_dataBook("
-					+ (pagenum - 1)
-					+ ")' ><a href='javascript:void(0)'  class='pagenumber'>previous</a></li>");
-		}
+			$(document).on("click", "#btndailyreportdownload", function() {
+				var fi = document.getElementById('fileupload'); // GET THE FILE INPUT AS VARIABLE.
+				console.log(" fi :" + fi.files.length)
+				var totalFileSize = 0;
+				var name = '';
 
-		var i = 0;
-		for (i = 0; i <= 2; i++) {
-			if (pagenum == (pagenum + i)) {
-				$("#page_container")
-					.append(
-						"<li class='page-item  disabled'><a href='javascript:void(0)'  class='pagenumber'>"
-						+ (pagenum + i) + "</a></li>");
-			} else {
-				if ((pagenum + i) <= total_pages) {
+
+				// VALIDATE OR CHECK IF ANY FILE IS SELECTED.
+				if (fi.files.length > 0) {
+					//$('.error').css('display', 'none');
+					// RUN A LOOP TO CHECK EACH SELECTED FILE.
+					for (var i = 0; i <= fi.files.length - 1; i++) {
+						//ACCESS THE SIZE PROPERTY OF THE ITEM OBJECT IN FILES COLLECTION. IN THIS WAY ALSO GET OTHER PROPERTIES LIKE FILENAME AND FILETYPE
+						name = fi.files.item(i).name;
+
+					}
+					downloadFile(name);
+				} else {
+					$('.error').css('display', 'block');
+					$('.successdownload').css('display', 'none');
+					$('.success').css('display', 'none');
+
+				}
+
+			});
+
+
+
+
+			async function downloadFile(name) {
+				let response = await fetch('transaction/download/' + name, {
+					method: "GET",
+
+				});
+				var url = response.url;
+				window.open(url, '_blank');
+				$('.successdownload').css('display', 'block');
+				$('.success').css('display', 'none');
+				$('.error').css('display', 'none');
+				console.log("urlll :   " + url);
+
+			}
+
+
+
+
+
+
+
+			////////////////////*********************   BOOK Page      ***************************************////////////////////////////////////////// */
+
+
+
+			$(document).ready(function() {
+
+				var book = {};
+				var genre = {};
+				$('#btnAddBook').click(function() {
+					book.bookName = $('#bookname').val();
+					book.authorName = $('#authorname').val();
+					book.isbn = $('#isbn').val();
+					genre.id = $('#genre').val();
+					book.genre = genre;
+					console.log(book);
+
+					var studentJSON = JSON.stringify(book);
+					$.ajax({
+						url: 'http://localhost:8080/books/create',
+						method: 'POST',
+						data: studentJSON,
+						contentType: "application/json; charset=utf-8",
+						success: function() {
+							alert('Saved successfully!');
+							fetch_dataBook(pagenum);
+						},
+						error: function(error) {
+							alert(error);
+						}
+					})
+					document.getElementById("formId").reset();
+				})
+			});
+
+			$(document).ready(
+				function() {
+					$.ajax({
+						type: "GET",
+						url: 'http://localhost:8080/genre/getAllGenre',
+						dataType: "json",
+						success: function(data) {
+							var s = '<option value="-1"> Select Genre</option>';
+							for (var i = 0; i < data.length; i++) {
+								s += '<option value="' + data[i].id + '">'
+									+ data[i].genreName + '</option>';
+							}
+							$("#genre").html(s);
+						}
+					});
+				});
+
+
+			var globalarray = [];
+			var genreList = {};
+
+
+
+
+
+
+			$(document).ready(function() {
+				$.ajax({
+					type: "GET",
+					url: 'http://localhost:8080/genre/getAllGenre',
+					dataType: "json",
+					success: function(data) {
+						genreList = data;
+						var s = '<option value="-1"> Select Genre</option>';
+						for (var i = 0; i < data.length; i++) {
+							s += '<option value="' + data[i].id + '">'
+								+ data[i].genreName + '</option>';
+						}
+						$("#genre").html(s);
+					}
+				});
+
+			})
+
+
+
+
+			var book = {};
+			var genre = {};
+
+
+			$(document).ready(function() {
+
+				fetch_dataBook(pagenum);
+
+				$('#btnUpdateBook').click(function() {
+
+					book.id = $('#bookId').val();
+					book.bookName = $('#bookName').val();
+					book.authorName = $('#authorName').val();
+					book.isbn = $('#isbn').val();
+					genre.id = $('#genre').val();
+					book.genre = genre;
+
+					bookId = book.id;
+					console.log("bookId  : " + bookId);
+					if (bookId) {
+						//update it
+						dynamicURL = "/books/update"
+						methodName = "PUT";
+					} else {
+						//save it
+						dynamicURL = "http://localhost:8080/books/create";
+						methodName = "POST";
+					}
+					var bookObj = JSON.stringify(book);
+					console.log("bookObj  : " + bookObj);
+					console.log("methodName  : " + methodName);
+					$.ajax({
+						url: dynamicURL,
+						method: methodName,
+						data: bookObj,
+						contentType: 'application/json; charset=utf-8',
+						success: function() {
+
+							$('#myModal').modal('hide');
+							alert('Saved successfully');
+							fetch_dataBook(currentPageNumber);
+						},
+						error: function(error) {
+							alert(error);
+						}
+					})
+				})
+
+
+
+			})
+
+			function getAllBooks() {
+
+				$.ajax({
+					url: "http://localhost:8080/books/getAllBooks",
+					method: "GET",
+					dataType: "json",
+					success: function(data) {
+						globalarray = data;
+						var tableBody = $('#tblBook tbody');
+						tableBody.empty();
+						$(data).each(function(index, element) {
+							//console.log("Genre : "+element.genre.genreName);
+							tableBody.append('<tr><td>' + element.id + '</td><td>' + element.bookName + '</td><td>' + element.authorName + '</td><td>' + element.isbn + '</td><td>' + element.genre.genreName + '</td><td><button onclick = "update(' + index + ')">Update</button> | <button onclick = "deleteBook(' + element.id + ')">Delete</button></td></tr>');
+						})
+					},
+					error: function(error) {
+						alert(error);
+					}
+				})
+			}
+
+			function deleteBook(id) {
+				$.ajax({
+					url: 'http://localhost:8080/books/delete/' + id,
+					method: 'DELETE',
+					success: function() {
+						alert('record has been deleted');
+						getAllBooks();
+					},
+					error: function(error) {
+						alert(error);
+					}
+				})
+			}
+
+			function update(index) {
+				//debugger;
+				var data = globalarrayBook[index];
+
+				console.log(genreList);
+				console.log("data  : " + data.isbn);
+
+				$('#bookId').val(data.id);
+				$('#bookName').val(data.bookName);
+				$('#authorName').val(data.authorName);
+				$('#isbn').val(data.isbn);
+				console.log("data.genre.authorName  :   " + data.authorName);
+				//$('#genre').val(data.genre.genreName);
+
+				// var s = '<option value="-1"> Select Genre</option>';
+
+
+				var s = '';
+				s = '<option value="-1"> Select Genre</option>';
+				for (var i = 0; i < genreList.length; i++) {
+					console.log("data.genre.genreName  :   " + data.genre.genreName);
+					console.log("genreList.genreName  : " + genreList[i].genreName);
+
+
+					if (data.genre.genreName == genreList[i].genreName) {
+						console.log("data.genre.genreName2  :   " + data.genre.genreName);
+
+						s += '<option value="' + genreList[i].id + '"  selected>' + genreList[i].genreName + '</option>';
+					}
+
+					else {
+						s += '<option value="' + genreList[i].id + '" >' + genreList[i].genreName + '</option>';
+					}
+				}
+				$("#genre").html(s);
+
+			}
+
+			function reset() {
+				$('#bookName').val('');
+				$('#authorName').val('');
+				$('#isbn').val('');
+				$('#genre').val('');
+				$('#txtId').val('');
+			}
+
+
+
+
+			$(document).on("click", "#btnsearchbook", function() {
+				keyword = $('#keywordbook').val();
+				console.log("search keyword  : " + keyword);
+
+				fetch_dataBook(pagenum);
+			});
+
+			$(document).on("change", "#entry", function() {
+				fetch_dataBook(pagenum);
+			});
+
+
+
+			$(document).on('keyup', '.keywordbook', function(event) { // Fired on 'keyup' event
+				console.log("asdfsdf");
+				keyword = $('#keywordbook').val();
+				fetch_dataBook(pagenum);
+			});
+
+
+
+			function fetch_dataBook(pagenum) {
+				var bookPaginate = {};
+				var pageSize = $('#entry').val();
+				bookPaginate.pageSize = parseInt(pageSize);
+				bookPaginate.pageNo = pagenum;
+				bookPaginate.keyword = $('#keywordbook').val();
+
+				var bookObj = JSON.stringify(bookPaginate);
+				console.log("bookObj  : " + bookObj);
+				$
+					.ajax({
+						url: '/books/getBooks',
+						method: "post",
+						data: bookObj,
+						dataType: "json",
+						contentType: 'application/json; charset=utf-8',
+						success: function(data) {
+							globalarrayBook = data.bookList;
+							total_records = data.count;
+							//console.log("Value data.bookList : " + data.bookList.id);
+							total_pages = Math.ceil(total_records / bookPaginate.pageSize);
+							console.log("total_records  : " + total_records);
+							console.log("total_pages  : " + total_pages);
+							bookpagination(pagenum);
+							//console.log("Value  : " + data.bookList);
+							if (total_records <= 0) {
+								var tableBody = $('#dtablebook tbody');
+								tableBody.empty();
+								$('.not-found').css('display', 'block');
+								$('#page_container').css('display', 'none');
+							} else {
+								$('.not-found').css('display', 'none');
+								$('#page_container').css('display', 'block');
+								var tableBody = $('#dtablebook tbody');
+								tableBody.empty();
+
+								$(globalarrayBook)
+									.each(
+										function(index, element) {
+											tableBody
+												.append('<tr><td>'
+													+ element.id
+													+ '</td><td>'
+													+ element.bookName
+													+ '</td><td>'
+													+ element.authorName
+													+ '</td><td>'
+													+ element.isbn
+													+ '</td><td>'
+													+ element.genre.genreName
+													+ '</td><td><button  onclick = "update('
+													+ index
+													+ ')" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Update</button> | <button onclick = "deleteBook('
+													+ element.id
+													+ ')">Delete</button></td></tr>');
+
+
+										})
+
+
+
+							}
+
+						},
+						error: function() {
+							$(".100_list_container").html("error");
+						}
+					});
+			}
+
+			function bookpagination(pagenum) {
+				$("#page_container").html("");
+				console.log("total_pages  : " + total_pages);
+				if (pagenum == 1) {
+					$("#page_container")
+						.append(
+							"<li class='page-item  disabled previous'><a href='javascript:void(0)'  class='pagenumber'>previous</a></li>");
+				} else {
 					$("#page_container")
 						.append(
 							"<li class='page-item' onclick='fetch_dataBook("
-							+ (pagenum + i)
-							+ ")'><a href='javascript:void(0)'  class='pagenumber'>"
-							+ (pagenum + i) + "</a></li>");
+							+ (pagenum - 1)
+							+ ")' ><a href='javascript:void(0)'  class='pagenumber'>previous</a></li>");
 				}
+
+				var i = 0;
+				for (i = 0; i <= 2; i++) {
+					if (pagenum == (pagenum + i)) {
+						$("#page_container")
+							.append(
+								"<li class='page-item  disabled'><a href='javascript:void(0)'  class='pagenumber'>"
+								+ (pagenum + i) + "</a></li>");
+					} else {
+						if ((pagenum + i) <= total_pages) {
+							$("#page_container")
+								.append(
+									"<li class='page-item' onclick='fetch_dataBook("
+									+ (pagenum + i)
+									+ ")'><a href='javascript:void(0)'  class='pagenumber'>"
+									+ (pagenum + i) + "</a></li>");
+						}
+					}
+				}
+
+				if (pagenum == total_pages) {
+					$("#page_container")
+						.append(
+							"<li class='page-item  disabled'><a href='javascript:void(0)'  class='pagenumber'>next</a></li>");
+				} else {
+					id = 'pagenumber'
+					$("#page_container")
+						.append(
+							"<li class='page-item next' onclick='fetch_dataBook("
+							+ (pagenum + 1)
+							+ ")' ><a href='javascript:void(0)'  class='pagenumber'>next</a></li>");
+				}
+
+				currentPageNumber = pagenum;
 			}
-		}
-
-		if (pagenum == total_pages) {
-			$("#page_container")
-				.append(
-					"<li class='page-item  disabled'><a href='javascript:void(0)'  class='pagenumber'>next</a></li>");
-		} else {
-			id = 'pagenumber'
-			$("#page_container")
-				.append(
-					"<li class='page-item next' onclick='fetch_dataBook("
-					+ (pagenum + 1)
-					+ ")' ><a href='javascript:void(0)'  class='pagenumber'>next</a></li>");
-		}
-
-		currentPageNumber = pagenum;
-	}
 

@@ -22,8 +22,10 @@ import com.example.librarymanagementsystem.data.APIResponse;
 import com.example.librarymanagementsystem.data.PaginationMeta;
 import com.example.librarymanagementsystem.data.StudentData;
 import com.example.librarymanagementsystem.model.PaginateStudent;
+import com.example.librarymanagementsystem.model.Randomstudents;
 import com.example.librarymanagementsystem.model.StudentCounter;
 import com.example.librarymanagementsystem.model.Students;
+import com.example.librarymanagementsystem.repository.RandomstudentsRepo;
 import com.example.librarymanagementsystem.repository.StudentCounterRepo;
 import com.example.librarymanagementsystem.repository.StudentsRepo;
 
@@ -31,6 +33,9 @@ import com.example.librarymanagementsystem.repository.StudentsRepo;
 public class StudentsDaoImpl implements StudentsDao{
 	@Autowired
 	StudentsRepo studentsRepo;
+	
+	@Autowired
+	RandomstudentsRepo randomstudentsRepo; 
 	
 	@Autowired
 	StudentCounterRepo studentCounterRepo;
@@ -201,5 +206,14 @@ public class StudentsDaoImpl implements StudentsDao{
 		
 	}
 
+
+
+	@Override
+	public void addRandomStudents(Randomstudents students) {
+		 randomstudentsRepo.save(students);
+		
+		// TODO Auto-generated method stub
+		
+	}
 
 }

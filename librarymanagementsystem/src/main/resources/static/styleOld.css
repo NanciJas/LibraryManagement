@@ -182,31 +182,10 @@
 }
 .input-container input {
     width: 80%;
-    
     border: none;
 }
 
 .input-container button {
     float: right;
-} 
-.card-body input{
-	margin: 4px;
-	
-}
-.card{
-	width: 35rem;
-}
-#btnAddStudent,#btnAddBook{
-	width: 126.333333%;
-    margin: 17px;
-}
-#genre{
-    width: 47%;
-    margin: 14px;
-}
-
-
-
-
-
+}  
     
