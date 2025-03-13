@@ -131,12 +131,12 @@ public class StudentsServiceImpl implements StudentsService {
 	
 
 	@Override
-	public void addRandomStudents(FileDetails fileDetails) throws Exception {
+	public void addRandomStudents(String fileDetails) throws Exception {
 		// "D:\\tempflod\\random_names.txt"
 		// String path = filepath.getFilePath();
 
-		System.out.println("FilePathh : " + fileDetails.getFilePath());
-		File file = new File("D:\\tempflod\\Uploads\\"+fileDetails.getFilePath());
+		System.out.println("FilePathh : " + fileDetails);
+		File file = new File("D:\\tempflod\\Uploads\\"+fileDetails);
 		Scanner sc = new Scanner(file);
 
 		while (sc.hasNextLine()) {

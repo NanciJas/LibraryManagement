@@ -37,7 +37,7 @@ public interface StudentsService {
 	
 
 	
-	void addRandomStudents(FileDetails fileDetails) throws Exception;
+	void addRandomStudents(String filename) throws Exception;
 	
 	
 	

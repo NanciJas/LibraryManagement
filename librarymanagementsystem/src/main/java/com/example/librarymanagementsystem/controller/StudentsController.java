@@ -110,27 +110,47 @@ public class StudentsController {
 	 
 	 
 	 
+
 	 
 	 
-//	 
-//		@PostMapping("/create")
-//		@ResponseStatus(HttpStatus.CREATED)
-//		public void addRandomStuents(@RequestParam("file") MultipartFile file,@RequestBody Randomstudents students) {
-//			
-//			studentsService.addRandomStudents(students);
-//		}
-//		
+	 @PostMapping("/createRandomStudents")
+		@ResponseStatus(HttpStatus.CREATED)
+		public void addRandomStuents(@RequestParam("file") MultipartFile file) throws Exception {
+		 	
+		 String filePath = "D:\\tempflod\\Uploads"+ File.separator + file.getOriginalFilename();
+	        String fileUploadStatus; 
+	        try { 
+	        	
+	              
+	            // Creating an object of FileOutputStream class   
+	            FileOutputStream fout = new FileOutputStream(filePath); 
+	            fout.write(file.getBytes()); 
+	              
+	            // Closing the connection  
+	            fout.close(); 
+	            fileUploadStatus = "File Uploaded Successfully"; 
+	              
+	        }  
+	        
+	        // Catch block to handle exceptions 
+	        catch (Exception e) { 
+	            e.printStackTrace(); 
+	            fileUploadStatus =  "Error in uploading file: " + e; 
+	        }
+	        studentsService.addRandomStudents(file.getOriginalFilename());
+		 
+		}
 	 
 	 
 
-		@PostMapping("/create")
+		/*@PostMapping("/create")
 		@ResponseStatus(HttpStatus.CREATED)
 		public void addRandomStuents(@RequestBody FileDetails fileDetails) throws Exception {
 					studentsService.addRandomStudents(fileDetails);
-		}
+		}*/
 
 	 
-	 @RequestMapping(value = "/upload", method = RequestMethod.POST) 
+	/* @RequestMapping(value = "/upload", method = RequestMethod.POST) 
 	    public String uploadFile(@RequestParam("file") MultipartFile file){ 
 	  
 	        // Setting up the path of the file 
@@ -158,6 +178,9 @@ public class StudentsController {
 	        } 
 	        return fileUploadStatus; 
 	    } 
+	 
+	 */
+	 
 	 
 	 
 	 

@@ -301,14 +301,14 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
-	$('#btnUpload').click(function() {
+	$('#btnAddRandomStudents').click(function() {
 		var fileInput = $('#fileInput')[0].files[0];
 		if(fileInput){
 			var formdata = new FormData();
 			formdata.append('file', fileInput);
 			console.log("formdata :"+formdata);
 				$.ajax({
-					url:'http://localhost:8080/students/upload',
+					url:'http://localhost:8080/students/createRandomStudents',
 					type:'POST',
 					data:formdata,
 					contentType:false,
@@ -344,7 +344,7 @@ function getFileName () {
       }
 
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	$('#btnAddRandomStudents').click(function() {
 		
 	
@@ -365,28 +365,8 @@ $(document).ready(function() {
 			document.getElementById("formId").reset();
 })
 
-});
+});*/
 
-/*
-	
-  $.ajax({
-    type: "POST",
-    enctype: 'multipart/form-data',
-    url: "http://localhost:8080/students/upload",
-    data: data,
-    processData: false,
-    contentType: false,
-    cache: false,
-    timeout: 600000,
-    success: function (data) {
-      console.log("SUCCESS!");
-    },
-    error: function (e) {
-      console.log("ERROR : ", e);
-    }
-  });
-});    
-*/
 
  
 
