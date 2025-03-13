@@ -204,6 +204,12 @@
     width: 47%;
     margin: 14px;
 }
+#fileInput{
+	    margin-left: 133px;
+}
+#btnAddRandomStudents{
+	    margin-left: 145px;
+}
 
 
 
